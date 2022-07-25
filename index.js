@@ -73,18 +73,13 @@ client.on('interactionCreate', async interaction => {
 		if (interaction.commandName === 'get') {
 			const focusedValue = interaction.options.getFocused();
 			
-			if (focusedValue.length > 2) {
-
-				let filtered = station_names.filter(choice => (choice.startsWith(focusedValue) || choice.toLowerCase().startsWith(focusedValue)));
-				if (filtered.length > 25) {
-					filtered = filtered.splice(0, 25);
-				}
-				await interaction.respond(
-					filtered.map(choice => ({ name: choice, value: choice })),
-				);
-			} else {
-				await interaction.respond([]);
+			let filtered = station_names.filter(choice => (choice.startsWith(focusedValue) || choice.toLowerCase().startsWith(focusedValue)));
+			if (filtered.length > 25) {
+				filtered = filtered.splice(0, 25);
 			}
+			await interaction.respond(
+				filtered.map(choice => ({ name: choice, value: choice })),
+			);
 
 		}
 	} else {
