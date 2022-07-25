@@ -7,14 +7,7 @@ module.exports = {
 		.setDescription('Test feature for the Vélibot - still in development.'),
 
 	async execute(interaction) {
-		
-		// Log
-		if (interaction.inGuild()) {
-			console.log(`> /${interaction.commandName} | ` + `tag: ${interaction.user.tag}` + `, server: ${interaction.guild.name}`);
-		} else {
-			console.log(`> /${interaction.commandName} | ` + `tag: ${interaction.user.tag}` + `, server: [None]`);
-		}
-		
+	
 
 		/*
 		https.get('https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metropole/station_status.json', (resp) => {
