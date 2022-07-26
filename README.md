@@ -19,5 +19,5 @@ node .
 ## Dependencies installation
 
 ```bash
-npm install discord.js @discordjs/rest
+npm install discord.js @discordjs/rest node-open-geocoder staticmaps
 ```

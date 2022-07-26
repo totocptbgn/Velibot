@@ -8,7 +8,8 @@ module.exports = {
 		.setDescription('Obtenez la disponibilité des vélos dans la stations de votre choix.')
 		.addStringOption(option =>
 			option.setName('nom')
-				.setDescription('Nom de la station')
+				.setDescription('Nom de la station.')
+				.setRequired(true)
 				.setAutocomplete(true)),
 
 	async execute(interaction) {
@@ -54,5 +55,5 @@ module.exports = {
 			await interaction.reply('Station not found.');
 		}
 
-	},
+	}
 };
