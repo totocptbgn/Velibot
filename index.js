@@ -24,7 +24,7 @@ for (const file of commandFiles) {
 // Executed at start
 client.once('ready', () => {
 
-	// Loading stations infos	
+	// Loading and keeping stations info
 	https.get('https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metropole/station_information.json', (resp) => {
 			
 			let raw_data = '';
@@ -38,13 +38,12 @@ client.once('ready', () => {
 					station_names.push(stations[i].name);
 				}
 				fs.writeFileSync('data.json', JSON.stringify(stations));
+				console.log('Ready!');
 			});
 
 	}).on("error", (err) => {
 		console.log("Error: " + err.message);
 	});
-	
-	console.log('Ready!');
 });
 
 // Handling interactions

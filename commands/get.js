@@ -19,7 +19,7 @@ module.exports = {
 
 		for (i in stations) {
 
-			// If we find a station with the right name, check the API
+			// If we find a station with the right name, check the API to get bikes numbers
 			if (stations[i].name == station_name) {
 
 				https.get('https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metropole/station_status.json', (resp) => {
@@ -29,6 +29,7 @@ module.exports = {
 						raw_data += chunk;
 					});
 
+					// Reply to the interaction with station data
 					resp.on('end', () => {
 						const infos = JSON.parse(raw_data).data.stations;
 						for (y in infos) {
@@ -44,15 +45,16 @@ module.exports = {
 					});
 
 				}).on("error", (err) => {
-					interaction.reply('Error: Vélib API not available...');
+					interaction.reply('Erreur: l\'API Vélib\' n\'est pas disponible...');
 				});
 				return;
 			}
 
 		}
 
+		// If the user search for a station that's not in the list
 		if (interaction.isRepliable()) {
-			await interaction.reply('Station not found.');
+			await interaction.reply('Station non trouvée.');
 		}
 
 	}
