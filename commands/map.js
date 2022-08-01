@@ -148,8 +148,17 @@ module.exports = {
 		await map.render();
 		await map.image.save(filename);
 
-		console.log(result);
-
+		let footer;
+		if (result.address.city_block != undefined) {
+			footer = result.address.city_block;
+		} else if (result.address.suburb != undefined) {
+			footer = result.address.suburb;
+		} else if (result.address.neighbourhood != undefined) {
+			footer = result.address.neighbourhood;
+		} else {
+			footer = 'Quartier non trouvé...';
+		}
+		
 		const file = new AttachmentBuilder(filename);
 		const exampleEmbed = new EmbedBuilder()
 			.setColor(0x000769)
@@ -160,7 +169,7 @@ module.exports = {
 			)
 			.setImage(`attachment://${filename}`)
 			.setTimestamp()
-			.setFooter({ text: result.address.city_block });
+			.setFooter({ text: footer });
 
 		await interaction.editReply({ embeds: [exampleEmbed], files: [file] });
 
