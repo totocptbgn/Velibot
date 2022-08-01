@@ -45,7 +45,7 @@ module.exports = {
 					});
 
 				}).on("error", (err) => {
-					interaction.reply('Erreur: l\'API Vélib\' n\'est pas disponible...');
+					interaction.reply({ content: 'Erreur: l\'API Vélib\' n\'est pas disponible...', ephemeral: true });
 				});
 				return;
 			}
@@ -54,7 +54,7 @@ module.exports = {
 
 		// If the user search for a station that's not in the list
 		if (interaction.isRepliable()) {
-			await interaction.reply('Station non trouvée.');
+			await interaction.reply({ content: 'Station non trouvée.', ephemeral: true });
 		}
 
 	}

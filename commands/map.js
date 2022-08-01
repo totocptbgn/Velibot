@@ -23,13 +23,13 @@ module.exports = {
 			.end((err, res) => {
 
 				if (res === undefined) {
-					interaction.editReply('Erreur: les serveurs Open Street Map sont hors-services.');
+					interaction.editReply({ content: 'Erreur: les serveurs Open Street Map sont hors-services.', ephemeral: true });
 					return;
 				}
 
 				// Checking if the geocoder found a result
 				if (res.length === 0) {
-					interaction.editReply('Erreur: L\'adresse est incorrecte.');
+					interaction.editReply({ content: 'Erreur: L\'adresse est incorrecte.', ephemeral: true });
 					return;
 				}
 
@@ -44,7 +44,7 @@ module.exports = {
 				}
 
 				if (result === undefined) {
-					interaction.editReply('Erreur: L\'adresse fournie n\'est pas en Île-de-France.');
+					interaction.editReply({ content: 'Erreur: L\'adresse fournie n\'est pas en Île-de-France.', ephemeral: true });
 				} else {
 					this.process(result, interaction);
 				}
@@ -107,7 +107,7 @@ module.exports = {
 
 		}).on("error", (err) => {
 			console.log("Error: " + err.message);
-			interaction.editReply('Error: Vélib API not available...');
+			interaction.editReply({ content: 'Error: Vélib API not available...', ephemeral: true });
 		});
 
 	},
@@ -148,15 +148,15 @@ module.exports = {
 		await map.render();
 		await map.image.save(filename);
 
-		console.log(first);
+		console.log(result);
 
 		const file = new AttachmentBuilder(filename);
 		const exampleEmbed = new EmbedBuilder()
 			.setColor(0x000769)
 			.addFields(
-				{ name: `1. ${first.info.name}`, value: `🟩 **${first.num_bikes_available_types[0].mechanical}**　·　🟦 **${first.num_bikes_available_types[1].ebike}**　·　🅿️ **${first.num_docks_available}**`},
-				{ name: `2. ${second.info.name}`, value: `🟩 **${second.num_bikes_available_types[0].mechanical}**　·　🟦 **${first.num_bikes_available_types[1].ebike}**　·　🅿️ **${second.num_docks_available}**`},
-				{ name: `3. ${third.info.name}`, value: `🟩 **${third.num_bikes_available_types[0].mechanical}**　·　🟦 **${third.num_bikes_available_types[1].ebike}**　·　🅿️ **${third.num_docks_available}**`},
+				{ name: `1. ${first.info.name}`, value: `🟩 : **${first.num_bikes_available_types[0].mechanical}**　　·　　🟦 : **${first.num_bikes_available_types[1].ebike}**　　·　　🅿️ : **${first.num_docks_available}**`},
+				{ name: `2. ${second.info.name}`, value: `🟩 : **${second.num_bikes_available_types[0].mechanical}**　　·　　🟦 : **${first.num_bikes_available_types[1].ebike}**　　·　　🅿️ : **${second.num_docks_available}**`},
+				{ name: `3. ${third.info.name}`, value: `🟩 : **${third.num_bikes_available_types[0].mechanical}**　　·　　🟦 : **${third.num_bikes_available_types[1].ebike}**　　·　　🅿️ : **${third.num_docks_available}**`},
 			)
 			.setImage(`attachment://${filename}`)
 			.setTimestamp()
