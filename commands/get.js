@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const https = require('https');
 const fs = require('node:fs');
 
@@ -34,11 +34,19 @@ module.exports = {
 						const infos = JSON.parse(raw_data).data.stations;
 						for (y in infos) {
 							if (infos[y].station_id == stations[i].station_id) {
-								interaction.reply(
-									'Nom : `' + station_name + '`' +
-									'\nVélos méchaniques : `' + infos[y].num_bikes_available_types[0].mechanical + '`' +
-									'\nVélos électriques : `' + infos[y].num_bikes_available_types[1].ebike + '`' +
-									'\nBornes libres : `' + infos[y].num_docks_available + '`');
+
+								const embed = new EmbedBuilder()
+									.setColor(0x000769)
+									.setTitle('Station : ' + station_name)
+									.setDescription(
+										'🟩　 Vélos méchaniques 　　　 **' + infos[y].num_bikes_available_types[0].mechanical + '**' +
+										'\n🟦　 Vélos électriques 　　　　 **' + infos[y].num_bikes_available_types[1].ebike + '**' +
+										'\n🅿️　 Bornes libres 　　　 　　 **' + infos[y].num_docks_available + '**'
+									)
+									.setTimestamp()
+									.setFooter({ text: 'Station n°' + infos[y].stationCode });
+
+								interaction.reply({ embeds: [embed] });
 								return;
 							}
 						}
