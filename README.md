@@ -6,12 +6,12 @@ Discord bot made for checking Vélib' stations availability.
 
 ## Use
 
-Déclarer les commandes à l'API Discord :
+Declare commands to the Discord API :
 ```bash
 node deploy-commands.js
 ```
 
-Lancer le bot :
+Start the bot :
 ```bash
 node .
 ```
