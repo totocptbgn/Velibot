@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
+const { SlashCommandBuilder, AttachmentBuilder, EmbedBuilder } = require('discord.js');
 const openGeocoder = require('node-open-geocoder');
 const StaticMaps = require('staticmaps');
 const fs = require('node:fs');
@@ -22,25 +22,31 @@ module.exports = {
 			.geocode(interaction.options.getString('adresse'))
 			.end((err, res) => {
 
+				if (res === undefined) {
+					interaction.editReply('Erreur: les serveurs Open Street Map sont hors-services.');
+					return;
+				}
+
 				// Checking if the geocoder found a result
 				if (res.length === 0) {
 					interaction.editReply('Erreur: L\'adresse est incorrecte.');
+					return;
+				}
+
+				let result;
+
+				// Keep the first result located in Paris' state
+				for (i in res) {
+					if (res[i].address.state === 'Île-de-France') {
+						result = res[i];
+						break;
+					}
+				}
+
+				if (result === undefined) {
+					interaction.editReply('Erreur: L\'adresse fournie n\'est pas en Île-de-France.');
 				} else {
-					let result;
-
-					// Keep the first result located in Paris' state
-					for (i in res) {
-						if (res[i].address.state === 'Île-de-France') {
-							result = res[i];
-							break;
-						}
-					}
-
-					if (result === undefined) {
-						interaction.editReply('Erreur: L\'adresse fournie n\'est pas en Île-de-France.');
-					} else {
-						this.process(result, interaction);
-					}
+					this.process(result, interaction);
 				}
 
 			});
@@ -55,6 +61,7 @@ module.exports = {
 		for (i in stations) {
 			stations_coord[i] = {
 				id: stations[i].station_id,
+				name: stations[i].name,
 				lat: stations[i].lat,
 				lon: stations[i].lon,
 				dist: Math.pow((stations[i].lat - result.lat), 2) + Math.pow((stations[i].lon - result.lon), 2)
@@ -109,8 +116,8 @@ module.exports = {
 	async make_map(result, interaction, first, second, third) {
 
 		const options = {
-			width: 500,
-			height: 500
+			width: 800,
+			height: 800
 		};
 		const map = new StaticMaps(options);
 
@@ -136,13 +143,27 @@ module.exports = {
 		marker.img = 'img/marker.png';
 		marker.coord = [Number(result.lon), Number(result.lat)];
 		map.addMarker(marker);
-	
-		await map.render();
 
 		const filename = `map_${new Date().getTime()}.png`;
+		await map.render();
 		await map.image.save(filename);
-		
-		await interaction.editReply({ files: [new AttachmentBuilder(filename, { name: 'map.png' })] });
+
+		console.log(first);
+
+		const file = new AttachmentBuilder(filename);
+		const exampleEmbed = new EmbedBuilder()
+			.setColor(0x000769)
+			.addFields(
+				{ name: `1. ${first.info.name}`, value: `🟩 **${first.num_bikes_available_types[0].mechanical}**　·　🟦 **${first.num_bikes_available_types[1].ebike}**　·　🅿️ **${first.num_docks_available}**`},
+				{ name: `2. ${second.info.name}`, value: `🟩 **${second.num_bikes_available_types[0].mechanical}**　·　🟦 **${first.num_bikes_available_types[1].ebike}**　·　🅿️ **${second.num_docks_available}**`},
+				{ name: `3. ${third.info.name}`, value: `🟩 **${third.num_bikes_available_types[0].mechanical}**　·　🟦 **${third.num_bikes_available_types[1].ebike}**　·　🅿️ **${third.num_docks_available}**`},
+			)
+			.setImage(`attachment://${filename}`)
+			.setTimestamp()
+			.setFooter({ text: result.address.city_block });
+
+		await interaction.editReply({ embeds: [exampleEmbed], files: [file] });
+
 		fs.unlinkSync(filename);
 	}
 };
