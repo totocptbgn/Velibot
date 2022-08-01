@@ -6,6 +6,14 @@ Discord bot made for checking Vélib' stations availability.
 
 ## Use
 
+Setup tokens to connect to the Discord API : Create the file `config.json` and add your bot tokens :
+```json
+{
+	"token": "BOT_TOKEN_HERE",
+	"applicationId": "APPLICATION_ID_HERE"
+}
+```
+
 Declare commands to the Discord API :
 ```bash
 node deploy-commands.js
