@@ -116,7 +116,7 @@ module.exports = {
 
 	// Building map with marker and message
 	async make_map(result, interaction, station_array) {
-		
+
 		// Creating map
 		const map_options = {
 			width: 800,
@@ -160,7 +160,10 @@ module.exports = {
 
 		const fields = [];
 		for (i in station_array) {
-			fields[i] = { name: `${Number(i) + 1}. ${station_array[i].info.name}`, value: `🟩 : **${station_array[i].num_bikes_available_types[0].mechanical}**　　·　　🟦 : **${station_array[i].num_bikes_available_types[1].ebike}**　　·　　🅿️ : **${station_array[i].num_docks_available}**` }
+			fields[i] = {
+				name: `${Number(i) + 1}. ${station_array[i].info.name}`,
+				value: `🟩 : **${station_array[i].num_bikes_available_types[0].mechanical}**　　·　　🟦 : **${station_array[i].num_bikes_available_types[1].ebike}**　　·　　🅿️ : **${station_array[i].num_docks_available}**`
+			};
 		}
 
 		const file = new AttachmentBuilder(filename);
