@@ -154,8 +154,11 @@ module.exports = {
 			footer = result.address.suburb;
 		} else if (result.address.neighbourhood != undefined) {
 			footer = result.address.neighbourhood;
+		} else if (result.address.municipality != undefined) {
+			footer = result.address.municipality;
 		} else {
-			footer = 'Quartier non trouvé...';
+			footer = 'Île-de-France';
+			console.log(result);
 		}
 
 		const fields = [];
@@ -173,7 +176,7 @@ module.exports = {
 			.setImage(`attachment://${filename}`)
 			.setTimestamp()
 			.setFooter({ text: footer });
-
+		
 		await interaction.editReply({ embeds: [exampleEmbed], files: [file] });
 
 		fs.unlinkSync(filename);
