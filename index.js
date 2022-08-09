@@ -3,7 +3,14 @@ const fs = require('node:fs');
 const path = require('node:path');
 const https = require('https');
 const { Client, Collection, GatewayIntentBits, InteractionType } = require('discord.js');
-const { token } = require('./config.json');
+const aws = require('aws-sdk');
+
+let s3 = new aws.S3({
+	token: process.env.token,
+	applicationId: process.env.applicationId
+});
+
+console.log(s3);
 
 let stations; // Stations info
 let station_names = []; // Stations name (for autocompletion)
