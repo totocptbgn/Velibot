@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const https = require('https');
 const { Client, Collection, GatewayIntentBits, InteractionType, EmbedBuilder } = require('discord.js');
-const token = process.env.token;
+const { token } = require('./config.json');
 
 let stations; // Stations info
 let station_names = []; // Stations name (for autocompletion)
@@ -21,7 +21,7 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
-// Executed at start
+// Executed at startù
 client.once('ready', () => {
 
 	// Loading and keeping stations info
