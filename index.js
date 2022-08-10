@@ -2,7 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const https = require('https');
-const { Client, Collection, GatewayIntentBits, InteractionType, EmbedBuilder } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, InteractionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const token = process.env.token;
 
 let stations; // Stations info
@@ -140,8 +140,17 @@ client.on('interactionCreate', async interaction => {
 					.setImage(interaction.message.embeds[0].data.image.url)
 					.setTimestamp()
 					.setFooter({ text: interaction.message.embeds[0].data.footer.text });
-	
-				interaction.update({ embeds: [new_embed], files: [] });
+
+				const row = new ActionRowBuilder()
+					.addComponents(
+						new ButtonBuilder()
+							.setCustomId('reload')
+							.setStyle(ButtonStyle.Primary)
+							.setLabel('　　　　　　Recharger les infos.　　　　　　　'));
+
+				interaction.update({ embeds: [new_embed], files: [], components: []})
+					.then(setTimeout(() => {interaction.editReply({ components: [row]})}, 30000));
+
 			});
 
 		}).on("error", (err) => {
