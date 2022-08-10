@@ -174,7 +174,7 @@ module.exports = {
 		}
 
 		const file = new AttachmentBuilder(filename);
-		const exampleEmbed = new EmbedBuilder()
+		const embed = new EmbedBuilder()
 			.setColor(0x473c6b)
 			.addFields(fields)
 			.setImage(`attachment://${filename}`)
@@ -186,14 +186,9 @@ module.exports = {
 				new ButtonBuilder()
 					.setCustomId('reload')
 					.setStyle(ButtonStyle.Primary)
-					.setEmoji('🔄'),
-				new ButtonBuilder()
-					.setCustomId('delete')
-					.setStyle(ButtonStyle.Danger)
-					.setEmoji('🗑️'),
-			);
+					.setLabel('　　　　　　Recharger les infos.　　　　　　　'));
 
-		await interaction.editReply({ embeds: [exampleEmbed], files: [file], components: [row] });
+		await interaction.editReply({ embeds: [embed], files: [file], components: [row] });
 
 		fs.unlinkSync(filename);
 	}
