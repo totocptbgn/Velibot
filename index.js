@@ -3,8 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const https = require('https');
 const { Client, Collection, GatewayIntentBits, InteractionType, EmbedBuilder } = require('discord.js');
-const { token } = require('./config.json');
-const { info } = require('node:console');
+const token = process.env.token;
 
 let stations; // Stations info
 let station_names = []; // Stations name (for autocompletion)
