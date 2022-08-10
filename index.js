@@ -129,7 +129,7 @@ client.on('interactionCreate', async interaction => {
 				const fields = [];
 				for (i in new_data) {
 					fields[i] = {
-						name: `${i+1}. ${names[i]}`,
+						name: `${Number(i) + 1}. ${names[i]}`,
 						value: `🟩 : **${new_data[i].num_bikes_available_types[0].mechanical}**　　·　　🟦 : **${new_data[i].num_bikes_available_types[1].ebike}**　　·　　🅿️ : **${new_data[i].num_docks_available}**`
 					};
 				}
