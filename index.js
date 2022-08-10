@@ -86,7 +86,9 @@ client.on('interactionCreate', async interaction => {
 	// Handling Buttons	
 	else if (interaction.isButton()) {
 		if (interaction.customId === 'delete') {
-			interaction.deleteReply();
+			await interaction.message.delete();
+		} else {
+			console.log(interaction.customId);
 		}
 	}
 	
