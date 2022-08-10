@@ -81,7 +81,16 @@ client.on('interactionCreate', async interaction => {
 			);
 
 		}
-	} else {
+	} 
+	
+	// Handling Buttons	
+	else if (interaction.isButton()) {
+		if (interaction.customId === 'delete') {
+			interaction.deleteReply();
+		}
+	}
+	
+	else {
 		return;
 	}
 

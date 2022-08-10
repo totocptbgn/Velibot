@@ -36,7 +36,7 @@ module.exports = {
 							if (infos[y].station_id == stations[i].station_id) {
 
 								const embed = new EmbedBuilder()
-									.setColor(0x000769)
+									.setColor(0x473c6b)
 									.setTitle('Station : ' + station_name)
 									.setDescription(
 										'🟩　 Vélos méchaniques 　　　 **' + infos[y].num_bikes_available_types[0].mechanical + '**' +

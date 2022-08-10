@@ -1,4 +1,4 @@
-# Velibot
+![Banner](img/velibot_banner.png)
  
 >Work In Progress
 
