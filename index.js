@@ -2,7 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const https = require('https');
-const { Client, Collection, GatewayIntentBits, InteractionType } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, InteractionType, EmbedBuilder } = require('discord.js');
 const token = process.env.token;
 
 let stations; // Stations info
@@ -26,20 +26,20 @@ client.once('ready', () => {
 
 	// Loading and keeping stations info
 	https.get('https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metropole/station_information.json', (resp) => {
-			
-			let raw_data = '';
-			resp.on('data', (chunk) => {
-				raw_data += chunk;
-			});
 
-			resp.on('end', () => {
-				stations = JSON.parse(raw_data).data.stations;
-				for (i in stations) {
-					station_names.push(stations[i].name);
-				}
-				fs.writeFileSync('data.json', JSON.stringify(stations));
-				console.log('Ready!');
-			});
+		let raw_data = '';
+		resp.on('data', (chunk) => {
+			raw_data += chunk;
+		});
+
+		resp.on('end', () => {
+			stations = JSON.parse(raw_data).data.stations;
+			for (i in stations) {
+				station_names.push(stations[i].name);
+			}
+			fs.writeFileSync('data.json', JSON.stringify(stations));
+			console.log('Ready!');
+		});
 
 	}).on("error", (err) => {
 		console.log("Error: " + err.message);
@@ -66,12 +66,12 @@ client.on('interactionCreate', async interaction => {
 			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 		}
 	}
-	
+
 	// Handling autocompletion
 	else if (interaction.type == InteractionType.ApplicationCommandAutocomplete) {
 		if (interaction.commandName === 'get') {
 			const focusedValue = interaction.options.getFocused();
-			
+
 			let filtered = station_names.filter(choice => (choice.startsWith(focusedValue) || choice.toLowerCase().startsWith(focusedValue)));
 			if (filtered.length > 25) {
 				filtered = filtered.splice(0, 25);
@@ -81,11 +81,75 @@ client.on('interactionCreate', async interaction => {
 			);
 
 		}
-	} else {
-		return;
 	}
 
+	// Handling Button (Reaload button)
+	else if (interaction.isButton()) {
+
+		// Get station names
+		const ids = [];
+		const names = [];
+		const stations = JSON.parse(fs.readFileSync('data.json'));
+
+		for (i in interaction.message.embeds[0].fields) {
+			names[i] = interaction.message.embeds[0].fields[i].name.slice(3);
+		}
+
+		// Get station IDs
+		for (i in interaction.message.embeds[0].fields) {
+			for (y in stations) {
+				if (stations[y].name === names[i]) {
+					ids.push(stations[y].station_id);
+					break;
+				}
+			}
+		}
+
+		// Get data and update the embed message
+		https.get('https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metropole/station_status.json', (resp) => {
+
+			let raw_data = '';
+			resp.on('data', (chunk) => {
+				raw_data += chunk;
+			});
+
+			resp.on('end', () => {
+				const infos = JSON.parse(raw_data).data.stations;
+				const new_data = {};
+
+				for (i in infos) {
+					for (y in ids) {
+						if (infos[i].station_id == ids[y]) {
+							new_data[y] = infos[i];
+							break;
+						}
+					}
+				}
+
+				const fields = [];
+				for (i in new_data) {
+					fields[i] = {
+						name: `${i}. ${names[i]}`,
+						value: `🟩 : **${new_data[i].num_bikes_available_types[0].mechanical}**　　·　　🟦 : **${new_data[i].num_bikes_available_types[1].ebike}**　　·　　🅿️ : **${new_data[i].num_docks_available}**`
+					};
+				}
+
+				const new_embed = new EmbedBuilder()
+					.setColor(0x473c6b)
+					.setFields(fields)
+					.setImage(interaction.message.embeds[0].data.image.url)
+					.setTimestamp()
+					.setFooter({ text: interaction.message.embeds[0].data.footer.text });
 	
+				interaction.update({ embeds: [new_embed], files: [] });
+			});
+
+		}).on("error", (err) => {
+			console.log(err);
+		});
+
+	}
+
 });
 
 // Login to Discord with your client's token

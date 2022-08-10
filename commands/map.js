@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, AttachmentBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, AttachmentBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const openGeocoder = require('node-open-geocoder');
 const StaticMaps = require('staticmaps');
 const fs = require('node:fs');
@@ -20,6 +20,10 @@ module.exports = {
 					{ name: '3', value: 3 },
 					{ name: '4', value: 4 },
 					{ name: '5', value: 5 },
+					{ name: '6', value: 6 },
+					{ name: '7', value: 7 },
+					{ name: '8', value: 8 },
+					{ name: '9', value: 9 },
 				)),
 
 	async execute(interaction) {
@@ -170,14 +174,21 @@ module.exports = {
 		}
 
 		const file = new AttachmentBuilder(filename);
-		const exampleEmbed = new EmbedBuilder()
-			.setColor(0x000769)
+		const embed = new EmbedBuilder()
+			.setColor(0x473c6b)
 			.addFields(fields)
 			.setImage(`attachment://${filename}`)
 			.setTimestamp()
 			.setFooter({ text: footer });
-		
-		await interaction.editReply({ embeds: [exampleEmbed], files: [file] });
+
+		const row = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setCustomId('reload')
+					.setStyle(ButtonStyle.Primary)
+					.setLabel('　　　　　　Recharger les infos.　　　　　　　'));
+
+		await interaction.editReply({ embeds: [embed], files: [file], components: [row] });
 
 		fs.unlinkSync(filename);
 	}
