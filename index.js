@@ -21,7 +21,7 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
-// Executed at startù
+// Executed at start
 client.once('ready', () => {
 
 	// Loading and keeping stations info

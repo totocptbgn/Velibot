@@ -1,0 +1,60 @@
+
+html,
+body {
+  height: 100%;
+  background-color: #473c6b;
+}
+
+body {
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  -ms-flex-pack: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  color: #fff;
+  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+}
+
+.cover-container {
+  max-width: 60em;
+}
+
+.cover {
+  padding: 0 1.5rem;
+}
+
+
+.mastfoot {
+  color: rgba(255, 255, 255, .5);
+}
+
+.ft {
+    color: rgba(255, 255, 255, .75);
+}
+
+.ft:hover {
+    color: rgba(255, 255, 255);
+}
+
+#banner {
+    margin: 30px;
+    width: 50%;
+    margin-top: 200px;
+}
+
+#github {
+    height: 20px;
+    margin-left: 5px;
+    padding-bottom: 2px;
+}
+
+.button {
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+#txt {
+    width: 500px;
+    margin: auto;
+}
