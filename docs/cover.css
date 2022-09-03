@@ -1,7 +1,6 @@
 html,
 body {
   height: 100%;
-  background-color: #473c6b;
 }
 
 body {
@@ -13,6 +12,25 @@ body {
   justify-content: center;
   color: #fff;
   text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+
+  animation-name: backgroundColorPalette;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes backgroundColorPalette {
+  0% {
+    background: #473c6b;
+  }
+
+  50% {
+    background: #30284a;
+  }
+
+  100% {
+    background: #473c6b;
+  }
 }
 
 .cover-container {
