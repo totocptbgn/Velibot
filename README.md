@@ -1,6 +1,6 @@
 ![Banner](img/velibot_banner.png)
  
-Discord bot made for checking Vélib' stations availability. Still a work in progress. Translated in french. You can add it to your server [here](https://discord.com/api/oauth2/authorize?client_id=1000050553520398356&permissions=534723950656&scope=bot).
+Discord bot made for checking Vélib' stations availability. Only in french. Made with [discord.js](https://discord.js.org/#/). Website available [here](https://totocptbgn.github.io/Velibot/).
 
 ## Deploy on your computer
 
