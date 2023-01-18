@@ -30,4 +30,4 @@ node .
 
 ## Deploy on Heroku
 
-The bot is actually deployed on [Heroku](https://www.heroku.com/), check the branch [heroku-deploy](https://github.com/totocptbgn/Velibot/tree/heroku-deploy).
+The bot was deployed on [Heroku](https://www.heroku.com/), check the branch [heroku-deploy](https://github.com/totocptbgn/Velibot/tree/heroku-deploy).
