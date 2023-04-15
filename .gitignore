@@ -2,3 +2,4 @@ config.json
 node_modules/
 data.json
 map_*.png
+data.csv

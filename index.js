@@ -24,7 +24,7 @@ for (const file of commandFiles) {
 // Executed at start
 client.once('ready', () => {
 
-	// Loading and keeping stations info
+	// Loading and storing stations infos
 	https.get('https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metropole/station_information.json', (resp) => {
 
 		let raw_data = '';
