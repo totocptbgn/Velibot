@@ -45,5 +45,4 @@ async function fetchData() {
 // Call every 10 minutes
 console.log('Added data with timestamp : ')
 fetchData();
-// setInterval(fetchData, 10 * 60 * 1000);
-setInterval(fetchData, 60000);
+setInterval(fetchData, 600000);
