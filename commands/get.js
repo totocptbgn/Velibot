@@ -14,7 +14,7 @@ module.exports = {
 
 	async execute(interaction) {
 		// Get stations info
-		const stations = JSON.parse(fs.readFileSync('data.json'));
+		const stations = JSON.parse(fs.readFileSync('data/data.json'));
 		const station_name = interaction.options.getString('nom');
 
 		for (i in stations) {

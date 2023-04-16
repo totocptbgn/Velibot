@@ -1,14 +1,5 @@
 const fs = require('fs');
 
-const date_options = {
-    year: '2-digit',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hourCycle: 'h23',
-};
-
 // Function to read timestamp
 function readTimestamp(minutesSinceEpoch) {
     const millisecondsSinceEpoch = minutesSinceEpoch * 60 * 1000;
@@ -33,16 +24,34 @@ async function fetchData() {
     // Add data for every stations
     const stations = data.data.stations;
     for (i in stations) {
-        fs.appendFileSync('data.csv', [timestamp, stations[i].station_id, stations[i].num_bikes_available_types[0].mechanical, stations[i].num_bikes_available_types[1].ebike, stations[i].num_docks_available].join(';') + '\n');
+        content = [
+            timestamp,
+            stations[i].station_id,
+            stations[i].num_bikes_available_types[0].mechanical,
+            stations[i].num_bikes_available_types[1].ebike,
+            stations[i].num_docks_available,
+            stations[i].is_renting,
+            stations[i].is_returning
+        ];
+        fs.appendFileSync('data/data_test.csv', content.join(';') + '\n');
     }
-    console.log(timestamp + " : " + readTimestamp(timestamp))
+    console.log(timestamp + " : " + readTimestamp(timestamp));
 
   } catch (error) {
     console.error(error);
   }
 }
 
-// Call every 10 minutes
-console.log('Added data with timestamp : ')
-fetchData();
-setInterval(fetchData, 600000);
+function scheduleFetchData() {
+    const now = new Date();
+    const minutes = now.getMinutes();
+    const remainder = 10 - (minutes % 10);
+    const timeUntilNextCall = remainder * 60 * 1000;
+
+    setTimeout(() => {
+        fetchData();
+        setInterval(fetchData, 600000);
+    }, timeUntilNextCall);
+}
+
+scheduleFetchData();

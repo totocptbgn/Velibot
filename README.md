@@ -28,6 +28,12 @@ Start the bot :
 node .
 ```
 
-## Deploy on Heroku
+## Data analysis - Work In Progress
 
-The bot was deployed on [Heroku](https://www.heroku.com/), check the branch [heroku-deploy](https://github.com/totocptbgn/Velibot/tree/heroku-deploy).
+Gather data from Vélib' API, save every 10 min stations data in `data/data.csv`:
+
+```bash
+node data_loader.js
+```
+
+To read the data, use the notebook `data_analysis.ipynb`.

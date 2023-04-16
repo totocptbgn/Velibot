@@ -21,6 +21,15 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
+function updateStationInformation() {
+	stations = JSON.parse(raw_data).data.stations;
+	for (i in stations) {
+		station_names.push(stations[i].name);
+	}
+	!fs.existsSync(path.join(__dirname, 'data')) && fs.mkdirSync(path.join(__dirname, 'data'));
+	fs.writeFileSync('data/data.json', JSON.stringify(stations));
+}
+
 // Executed at start
 client.once('ready', () => {
 
@@ -33,11 +42,8 @@ client.once('ready', () => {
 		});
 
 		resp.on('end', () => {
-			stations = JSON.parse(raw_data).data.stations;
-			for (i in stations) {
-				station_names.push(stations[i].name);
-			}
-			fs.writeFileSync('data.json', JSON.stringify(stations));
+			updateStationInformation()
+			setInterval(updateStationInformation, 86400000);
 			console.log('Ready!');
 		});
 
@@ -86,12 +92,10 @@ client.on('interactionCreate', async interaction => {
 	// Handling Button (Reaload button)
 	else if (interaction.isButton()) {
 
-		// await interaction.deferUpdate();
-
 		// Get station names
 		const ids = [];
 		const names = [];
-		const stations = JSON.parse(fs.readFileSync('data.json'));
+		const stations = JSON.parse(fs.readFileSync('data/data.json'));
 
 		for (i in interaction.message.embeds[0].fields) {
 			names[i] = interaction.message.embeds[0].fields[i].name.slice(3);

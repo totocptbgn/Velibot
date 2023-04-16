@@ -3,6 +3,7 @@ const openGeocoder = require('node-open-geocoder');
 const StaticMaps = require('staticmaps');
 const fs = require('node:fs');
 const https = require('https');
+const path = require('path');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -72,7 +73,7 @@ module.exports = {
 
 	async process(result, interaction, nb_station) {
 
-		const stations = JSON.parse(fs.readFileSync('data.json'));
+		const stations = JSON.parse(fs.readFileSync('data/data.json'));
 		let stations_coord = [];
 
 		// Get the 3 closest stations from coordonates
@@ -147,8 +148,10 @@ module.exports = {
 
 		// Creating map image
 		const filename = `map_${new Date().getTime()}.png`;
+		const filepath = path.join(__dirname, `../data/${filename}`);
+
 		await map.render();
-		await map.image.save(filename);
+		await map.image.save(filepath);
 
 		// Building and sending embed message
 		let footer;
@@ -173,7 +176,7 @@ module.exports = {
 			};
 		}
 
-		const file = new AttachmentBuilder(filename);
+		const file = new AttachmentBuilder(filepath);
 		const embed = new EmbedBuilder()
 			.setColor(0x473c6b)
 			.addFields(fields)
@@ -190,6 +193,6 @@ module.exports = {
 
 		await interaction.editReply({ embeds: [embed], files: [file], components: [row] });
 
-		fs.unlinkSync(filename);
+		fs.unlinkSync(filepath);
 	}
 };

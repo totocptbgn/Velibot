@@ -1,5 +1,5 @@
 config.json
 node_modules/
-data.json
-map_*.png
-data.csv
+data/data.json
+data/map_*.png
+data/data.csv
