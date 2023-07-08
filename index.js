@@ -21,13 +21,14 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
-function updateStationInformation() {
+function updateStationInformation(raw_data) {
 	stations = JSON.parse(raw_data).data.stations;
 	for (i in stations) {
 		station_names.push(stations[i].name);
 	}
 	!fs.existsSync(path.join(__dirname, 'data')) && fs.mkdirSync(path.join(__dirname, 'data'));
 	fs.writeFileSync('data/data.json', JSON.stringify(stations));
+	console.log('Updated stations informations.')
 }
 
 // Executed at start
@@ -42,7 +43,7 @@ client.once('ready', () => {
 		});
 
 		resp.on('end', () => {
-			updateStationInformation()
+			updateStationInformation(raw_data)
 			setInterval(updateStationInformation, 86400000);
 			console.log('Ready!');
 		});
@@ -89,7 +90,7 @@ client.on('interactionCreate', async interaction => {
 		}
 	}
 
-	// Handling Button (Reaload button)
+	// Handling Button (Reload button)
 	else if (interaction.isButton()) {
 
 		// Get station names
@@ -162,9 +163,12 @@ client.on('interactionCreate', async interaction => {
 		}).on("error", (err) => {
 			console.log(err);
 		});
-
+		if (interaction.inGuild()) {
+			console.log(`Reload button for ${interaction.user.tag} in server ${interaction.guild.name}`)
+		} else {
+			console.log(`Reload button for ${interaction.user.tag} in DM.`)
+		}
 	}
-
 });
 
 // Login to Discord with your client's token

@@ -12,7 +12,6 @@ body {
   justify-content: center;
   color: #fff;
   text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
-
   animation-name: backgroundColorPalette;
   animation-duration: 10s;
   animation-iteration-count: infinite;
@@ -30,6 +29,74 @@ body {
 
   100% {
     background: #473c6b;
+  }
+}
+
+.responsive-img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 576px) {
+  .cover-container {
+    max-width: 90%;
+  }
+
+  #banner, #demo {
+    width: 100%;
+  }
+
+  .button {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+
+  .txt {
+    margin-top: 50px;
+    margin-bottom: 25px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+  .cover-container {
+    max-width: 80%;
+  }
+
+  #banner, #demo {
+    width: 80%;
+  }
+
+  .button {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+
+  .txt {
+    margin-top: 75px;
+    margin-bottom: 35px;
+    width: 90%;
+  }
+}
+
+@media (min-width: 769px) {
+  .cover-container {
+    max-width: 60em;
+  }
+
+  #banner, #demo {
+    width: 70%;
+  }
+
+  .button {
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+
+  .txt {
+    margin-top: 100px;
+    margin-bottom: 50px;
+    width: 80%;
   }
 }
 
